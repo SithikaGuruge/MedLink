@@ -17,7 +17,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const settings = ["Profile", "Logout"];
 
-function ResponsiveAppBar() {
+function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElServices, setAnchorElServices] = React.useState(null);
@@ -330,4 +330,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Navbar;

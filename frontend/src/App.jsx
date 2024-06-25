@@ -1,12 +1,12 @@
 import React from "react";
 import HomePage from "./pages/HomePage";
-import ResponsiveAppBar from "./components/Navbar";
+import Navbar from "./components/Navbar";
 
 
 const App = () => {
   return (
     <div className="bg-black text-3xl flex justify-center items-center text-white">
-      <ResponsiveAppBar />
+      <Navbar />
     </div>
   );
 };
