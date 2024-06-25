@@ -64,7 +64,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -111,10 +111,10 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem onClick={()=>{ window.location.href = "/";}}>
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem onClick={()=>{ window.location.href = "#about";}}>
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
 
@@ -174,6 +174,7 @@ function ResponsiveAppBar() {
               src={logo}
               alt="logo"
               style={{ width: "50px", height: "50px" }}
+              onClick={()=>{ window.location.href = "/"}}
             />
           </Typography>
 
@@ -318,7 +319,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={()=>{ window.location.href = `/${setting}`;}}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
