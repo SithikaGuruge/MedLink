@@ -1,12 +1,15 @@
 import React from "react";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 
 const App = () => {
   return (
-    <div className="bg-black text-3xl flex justify-center items-center text-white">
+    <div className="flex justify-center items-center flex-col">
       <Navbar />
+      <HomePage />
+      <Footer />
     </div>
   );
 };
