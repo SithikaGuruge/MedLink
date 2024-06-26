@@ -1,8 +1,10 @@
 import React from "react";
-import axios from "axios";
+import coverPhoto from "../assets/Cover.png";
 
 export default function HomePage() {
-  
-  return <div> Home Page</div>
-  
+  return (
+    <div >
+      <img src={coverPhoto} alt="cover" />
+    </div>
+  );
 }
