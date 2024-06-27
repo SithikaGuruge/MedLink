@@ -3,7 +3,7 @@ import logo from "../assets/logo.png";
 import { IoIosArrowForward } from "react-icons/io";
 export default function Footer() {
   return (
-    <div className="bg-blue-500 max-w-full w-full text-center">
+    <div className="bg-blue-500 max-w-full w-full text-center py-2">
       <div className="flex flex-row space-x-4 sm:space-x-10 lg:space-x-20 justify-center my-2 ">
       <div className="flex justify-center items-center flex-col ml-1 sm:ml-0">
         <img src={logo} alt="logo" className="lg:h-12 lg:w-12 sm:h-10 sm:w-10 h-8 w-8" />
