@@ -4,6 +4,7 @@ import Services from "../components/Home/services";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Scans from "../components/Home/scans";
+import Tests from "../components/Home/tests";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <img src={coverPhoto} alt="cover" />
       <Services />
       <Scans/>
+      <Tests/>
       <Footer />
     </div>
   );
