@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../assets/logo.png";
-import cover from "../assets/Cover.png";
+import cover from "../assets/person.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const settings = ["Profile", "Logout"];
