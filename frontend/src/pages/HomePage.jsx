@@ -7,6 +7,7 @@ import Scans from "../components/Home/scans";
 import Tests from "../components/Home/tests";
 import Pharmaceuticals from "../components/Home/pharmaceuticals";
 import Clinics from "../components/Home/clinics";
+import Channel from "../components/Home/channel";
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Tests/>
       <Pharmaceuticals/>
       <Clinics/>
+      <Channel/>
       <Footer />
     </div>
   );
