@@ -62,7 +62,7 @@ export default function Services() {
 
   return (
     <div className="bg-gray-400 flex justify-center flex-col py-8">
-      <h1 className="text-2xl lg:text-4xl md:text-3xl text-center font-bold text-gray-800">
+      <h1 className="text-2xl lg:text-5xl md:text-3xl text-center font-bold text-gray-800 mb-6">
         Our Services
       </h1>
 
