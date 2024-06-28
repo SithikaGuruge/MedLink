@@ -5,15 +5,15 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import logo from "../assets/logo.png";
 import cover from "../assets/person.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const settings = ["Profile", "Logout"];
 
@@ -29,6 +29,22 @@ function Navbar() {
     "Channeling",
   ];
 
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   const handleOpenServicesMenu = (event) => {
     setAnchorElServices(event.currentTarget);
   };
@@ -37,27 +53,18 @@ function Navbar() {
     setAnchorElServices(null);
   };
 
-  const handleServiceClick = (sectionId) => {
-    setAnchorElServices(null);
-    window.location.href = `#${sectionId}`;
+  const handleServiceClick = (event, sectionId) => {
+    event.preventDefault();
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+      handleCloseNavMenu();
+      handleCloseServicesMenu();
+    }
   };
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl" className="bg-white font-bold ">
         <Toolbar disableGutters>
           <Typography
@@ -69,7 +76,6 @@ function Navbar() {
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
-
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
@@ -111,14 +117,28 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={()=>{ window.location.href = "/";}}>
+              <MenuItem
+                onClick={() => {
+                  window.location.href = "/";
+                  handleCloseNavMenu();
+                }}
+              >
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
-              <MenuItem onClick={()=>{ window.location.href = "#about";}}>
+              <MenuItem
+                onClick={() => {
+                  window.location.href = "#about";
+                  handleCloseNavMenu();
+                }}
+              >
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
-
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem
+                onClick={() => {
+                  window.location.href = "/company";
+                  handleCloseNavMenu();
+                }}
+              >
                 <Typography textAlign="center">Company</Typography>
               </MenuItem>
               <MenuItem onClick={handleOpenServicesMenu}>
@@ -143,40 +163,24 @@ function Navbar() {
                 {serviceList.map((service, index) => (
                   <MenuItem
                     key={index}
-                    onClick={() => handleServiceClick(`section-${index}`)}
+                    onClick={(event) =>
+                      handleServiceClick(event, `section-${index}`)
+                    }
                   >
                     <Typography textAlign="center">{service}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem
+                onClick={() => {
+                  window.location.href = "/pages";
+                  handleCloseNavMenu();
+                }}
+              >
                 <Typography textAlign="center">Pages</Typography>
               </MenuItem>
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              style={{ width: "50px", height: "50px" }}
-              onClick={()=>{ window.location.href = "/"}}
-            />
-          </Typography>
 
           <Box
             sx={{
@@ -222,7 +226,9 @@ function Navbar() {
             </Button>
             <Button
               className="hover:color-red-500"
-              onClick={handleCloseNavMenu}
+              onClick={() => {
+                window.location.href = "/company";
+              }}
               sx={{
                 my: 2,
                 mx: 1,
@@ -258,12 +264,14 @@ function Navbar() {
               anchorEl={anchorElServices}
               anchorOrigin={{
                 vertical: "bottom",
-                horizontal: "left",
+                horizontal: "right",
               }}
-              keepMounted
               transformOrigin={{
                 vertical: "top",
-                horizontal: "left",
+                horizontal: "right",
+              }}
+              PopperProps={{
+                disablePortal: true,
               }}
               open={Boolean(anchorElServices)}
               onClose={handleCloseServicesMenu}
@@ -271,7 +279,9 @@ function Navbar() {
               {serviceList.map((service, index) => (
                 <MenuItem
                   key={index}
-                  onClick={() => handleServiceClick(`section-${index}`)}
+                  onClick={(event) =>
+                    handleServiceClick(event, `section-${index}`)
+                  }
                 >
                   <Typography textAlign="center">{service}</Typography>
                 </MenuItem>
@@ -279,7 +289,9 @@ function Navbar() {
             </Menu>
             <Button
               className="hover:color-red-500"
-              onClick={handleCloseNavMenu}
+              onClick={() => {
+                window.location.href = "/pages";
+              }}
               sx={{
                 my: 2,
                 mx: 1,
@@ -319,7 +331,12 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={()=>{ window.location.href = `/${setting}`;}}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => {
+                    window.location.href = `/${setting}`;
+                  }}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -330,4 +347,5 @@ function Navbar() {
     </AppBar>
   );
 }
+
 export default Navbar;
