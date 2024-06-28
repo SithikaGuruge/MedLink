@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <div>
     <Navbar />
-      <img src={coverPhoto} alt="cover" />
+      <img src={coverPhoto} className="lg:mt-[68px] mt-[56px]" alt="cover" />
       <Services />
       <Scans/>
       <Tests/>

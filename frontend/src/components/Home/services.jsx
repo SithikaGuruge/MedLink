@@ -28,7 +28,7 @@ export default function Services() {
       description:
         "Get to know all the reliable and well known laboratories to get your prescribed test today.",
       onclick: () => {
-        window.location.href = "#section-1";
+        handleServiceClick("section-1");
       },
     },
     {
@@ -37,7 +37,7 @@ export default function Services() {
       description:
         "Check the availability of the medication that you are looking for prior for stepping into the pharmacy.",
       onclick: () => {
-        window.location.href = "#section-2";
+        handleServiceClick("section-2");
       },
     },
     {
@@ -46,7 +46,7 @@ export default function Services() {
       description:
         "Secure an appointment with your doctor in a time that is significant for you and your loved ones.",
       onclick: () => {
-        window.location.href = "#section-3";
+        handleServiceClick("section-3");
       },
     },
     {
@@ -55,10 +55,17 @@ export default function Services() {
       description:
         "Channel your doctor to a time that you are comfortable with.",
       onclick: () => {
-        window.location.href = "#section-4";
+        handleServiceClick("section-4");
       },
     },
   ];
+
+  const handleServiceClick = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="bg-gray-300 flex justify-center flex-col py-8">
