@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Scans from "../components/Home/scans";
 import Tests from "../components/Home/tests";
+import Pharmaceuticals from "../components/Home/pharmaceuticals";
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Services />
       <Scans/>
       <Tests/>
+      <Pharmaceuticals/>
       <Footer />
     </div>
   );
