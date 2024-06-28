@@ -20,22 +20,20 @@ export default function Pharmaceuticals() {
           Pharmacy at Your Doorstep
           </h1>
           <h1 className="lg:max-w-lg max-w-sm mx-2 sm:mx-auto md:text-start text-center lg:text-base py-4">
-          Experience streamlined clinic management through Medi Link's intuitive platform, empowering seamless scheduling and resource optimization for enhanced patient experiences.
+          Through MediLink you can discover the convenience of MediLink, where you can effortlessly locate nearby pharmacies, check medicine availability, compare prices, and explore different brands.
           </h1>
           <h1 className="bold text-xl text-center font-semibold md:text-start">
-            {" "}
-            MRI
+            
+            Find Nearby Pharmacies
           </h1>
           <h1 className="lg:max-w-lg max-w-sm mx-2 sm:mx-auto md:text-start text-center lg:text-base py-4">
-            Provide precise imaging for diagnosing brain, joint, and organ
-            conditions without radiation exposure.
+          Easily locate the nearest pharmacies using our app, ensuring you have quick access to essential medications whenever you need them.
           </h1>
           <h1 className="bold text-xl text-center font-semibold md:text-start">
-            CT Scans
+          Medicine Availability and Pricing
           </h1>
           <h1 className="lg:max-w-lg max-w-sm mx-2 sm:mx-auto md:text-start text-center lg:text-base py-4">
-            Offer rapid, detailed images crucial for diagnosing injuries,
-            tumors, and internal conditions with exceptional clarity.
+          Stay informed about available medicines, their prices, and brands, allowing you to make the best choices for your healthcare needs.
           </h1>
         </div>
       </div>
