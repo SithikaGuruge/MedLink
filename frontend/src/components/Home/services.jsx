@@ -9,7 +9,7 @@ import { ImLab } from "react-icons/im";
 
 export default function Services() {
   const cardStyle =
-    "bg-white rounded-xl overflow-hidden shadow-lg px-3 py-5 hover:shadow-2xl hover:bg-gray-300 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex flex-col max-w-xs justify-center items-center mx-auto h-full";
+    "bg-white rounded-xl overflow-hidden shadow-lg px-3 py-5 hover:shadow-2xl hover:bg-gray-200 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex flex-col max-w-xs justify-center items-center mx-auto h-full";
   const iconStyle = "mx-auto text-6xl py-2 ";
 
   const services = [
@@ -61,7 +61,7 @@ export default function Services() {
   ];
 
   return (
-    <div className="bg-gray-400 flex justify-center flex-col py-8">
+    <div className="bg-gray-300 flex justify-center flex-col py-8">
       <h1 className="text-2xl lg:text-5xl md:text-3xl text-center font-bold text-gray-800 mb-6">
         Our Services
       </h1>
