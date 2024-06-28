@@ -10,7 +10,7 @@ export default function Scans() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-6">
     <img src={image} alt="Scans" className="rounded-xl h-64 w-80 sm:w-96 sm:h-80 mx-auto lg:size-max" />
     <div className="mx-auto">
-        <h1 className="lg:text-3xl font-bold text-center text-2xl lg:text-start">ScanSmart: <br/> Precision Imaging at Your Fingertips</h1>
+        <h1 className="lg:text-3xl font-bold text-center text-2xl lg:text-start">Precision Imaging at Your Fingertips</h1>
         <h1 className="lg:max-w-lg max-w-sm mx-2 sm:mx-auto md:text-start text-center lg:text-base py-4">Discover a new era of imaging efficiency with ScanSmart by Medi Link. Seamlessly manage and schedule scans, ensuring timely access to essential diagnostics for improved patient outcomes.</h1>
         <h1 className="bold text-xl text-center font-semibold md:text-start"> MRI</h1>
         <h1 className="lg:max-w-lg max-w-sm mx-2 sm:mx-auto md:text-start text-center lg:text-base py-4">Provide precise imaging for diagnosing brain, joint, and organ conditions without radiation exposure.</h1>

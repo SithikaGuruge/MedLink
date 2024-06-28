@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import Scans from "../components/Home/scans";
 import Tests from "../components/Home/tests";
 import Pharmaceuticals from "../components/Home/pharmaceuticals";
+import Clinics from "../components/Home/clinics";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Scans/>
       <Tests/>
       <Pharmaceuticals/>
+      <Clinics/>
       <Footer />
     </div>
   );

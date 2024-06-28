@@ -13,11 +13,11 @@ export default function Pharmaceuticals() {
         <img
           src={image}
           alt="Scans"
-          className="rounded-xl h-64 w-80 sm:w-96 sm:h-80 mx-auto lg:size-max lg:h-[400px] lg:w-[650px] "
+          className="rounded-xl h-64 w-80 sm:w-96 sm:h-80 mx-auto lg:h-[400px] lg:w-[650px] "
         />
         <div className="mx-auto">
           <h1 className="lg:text-3xl font-bold text-center text-2xl lg:text-start">
-          Pharmacy at your doorstep
+          Pharmacy at Your Doorstep
           </h1>
           <h1 className="lg:max-w-lg max-w-sm mx-2 sm:mx-auto md:text-start text-center lg:text-base py-4">
           Experience streamlined clinic management through Medi Link's intuitive platform, empowering seamless scheduling and resource optimization for enhanced patient experiences.
