@@ -7,7 +7,7 @@ import getServiceProviderRoute from "./routes/serviceProvider.js";
 import { connectDB } from "./db.js";
 
 dotenv.config();
-const port = 5002;
+const port = process.env.PORT || 5000;
 const app = express();
 
 //start the server and connect to mongodb
