@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import user_icon from '../assets/LoginSignup/person.png';
 import email_icon from '../assets/LoginSignup/email.png';
 import password_icon from '../assets/LoginSignup/password.png';
 import login_background from '../assets/LoginSignup/loginBackground.jpeg';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import {gapi} from 'gapi-script';
+import GoogleBtn from "../components/Google_button/login_button";
 
 const Login = () => {
     const [action, setAction] = useState("Sign Up");
@@ -12,9 +14,22 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const clientId = "323456269818-a8d34qapnol64tej4s9g8e6dksli2qge.apps.googleusercontent.com";
+
     const handleTabClick = (selectedAction) => {
         setAction(selectedAction);
     };
+
+    useEffect(()=>{
+        function start() {
+            gapi.client.init({
+                clientId: clientId,
+                scope: ""
+            })
+        };
+
+        gapi.load('client:auth2',start);
+    });
 
     const handleSubmit = () => {
         const details = { email, password };
@@ -110,13 +125,14 @@ const Login = () => {
                                 className="flex-1 bg-transparent border-none outline-none text-gray-600 text-lg"
                             />
                         </div>
+                        
                     </div>
                     {action === "Login" && (
                         <div className="text-center mb-6">
                             <span className="text-blue-500 cursor-pointer">Lost Password? Click Here!</span>
                         </div>
                     )}
-                    <div className="flex justify-center">
+                    <div className="flex justify-center mb-2">
                         <div
                             className="bg-blue-400 text-black font-bold py-3 px-6 rounded-lg cursor-pointer"
                             onClick={handleSubmit}
@@ -124,12 +140,17 @@ const Login = () => {
                             {action === "Login" ? "Login" : "Sign Up"}
                         </div>
                     </div>
+                    <div className="flex justify-center mb-1 text-gray-500">-OR-</div>
+                    <div className="flex justify-center">
+                        <GoogleBtn action={action}/>
+                    </div>
                     <div className="g-signin2 mt-4" data-onsuccess="onSignIn"></div>
                 </div>
                 <div className="flex-1 flex items-center justify-center">
                     <img src={login_background} alt="Example" className="w-full h-full object-cover rounded-lg" />
                 </div>
             </div>
+            
             <Footer />
         </div>
     );
