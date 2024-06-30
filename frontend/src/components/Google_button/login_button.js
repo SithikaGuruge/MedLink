@@ -8,12 +8,15 @@ const googleBtn = ({action}) => {
         console.log("LOGIN SUCCESS! Welcome: ", res.profileObj);
 
         // Extract user name and email
-        const { name, email } = res.profileObj;
+        const { name, email, googleId, imageUrl } = res.profileObj;
 
         // Prepare the payload
         const payload = {
             name: name,
-            email: email
+            email: email,
+            googleId: googleId,
+            imageUrl: imageUrl
+
         };
         fetch('/login', {
             method: 'POST',
