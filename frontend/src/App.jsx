@@ -1,11 +1,12 @@
 import React from "react";
 import HomePage from "./pages/HomePage";
+import UserProfile from "./pages/UserProfile";
 
 
 const App = () => {
   return (
     <div >
-      <HomePage />
+      <UserProfile /> 
     </div>
   );
 };
