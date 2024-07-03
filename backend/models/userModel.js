@@ -12,11 +12,9 @@ const userSchema = new mongoose.Schema({
   },
   age: {
     type: Number,
-    required: [true, "Please tell us your age!"],
   },
   contactNumber: {
     type: String,
-    required: [true, "Please tell us your contact number!"],
   },
 });
 
