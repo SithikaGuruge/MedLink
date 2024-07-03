@@ -4,6 +4,8 @@ import { validateUser } from "../utils/validators.js";
 import { db } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 const signup = async (req, res) => {
   try {
@@ -80,8 +82,18 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRE || "1h",
+    const token = jwt.sign(
+      { username, userId: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRE || "1h",
+      }
+    );
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', 
+      maxAge: 3600000, 
     });
 
     res.status(200).json({ token });
