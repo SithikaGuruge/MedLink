@@ -46,16 +46,23 @@ const Login = () => {
         },
         body: JSON.stringify(details),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error('Login failed');
+          }
+        })
         .then((data) => {
           console.log("Success:", data);
+          window.location.href = "/";
+          
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-    }
-  };
-
+    } 
+  }
   return (
     <div className="wrapper">
       <div className="container">

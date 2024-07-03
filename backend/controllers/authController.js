@@ -78,9 +78,12 @@ const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       maxAge: 3600000,
+      sameSite: 'lax', 
     });
+    console.log("Token set:", token); 
+
 
     res.status(200).json({ token });
   } catch (error) {

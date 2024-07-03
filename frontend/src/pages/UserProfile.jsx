@@ -1,8 +1,8 @@
-import React, { useState, useRef,useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import photo from "../assets/person.png";
 import { FaEdit } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-import axios from 'axios';
+import axios from "axios";
 
 const ProfilePicture = ({ photo, onPhotoChange }) => {
   const fileInputRef = useRef(null);
@@ -41,16 +41,18 @@ const ProfilePicture = ({ photo, onPhotoChange }) => {
 };
 
 export default function UserProfile() {
-
-  const [user, setUser] = useState(null);
+  const [user1, setUser1] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('/protected/getUserbyID', {
-          withCredentials: true, 
-        });
-        setUser(res.data);
+        const res = await axios.get(
+          "http://localhost:5000/protected/getUserbyID",
+          {
+            withCredentials: true,
+          }
+        );
+        setUser1(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -58,12 +60,12 @@ export default function UserProfile() {
 
     fetchData();
   }, []);
-  // const [user, setUser] = useState({
-  //   name: "John Doe",
-  //   email: "john@example.com",
-  //   phone: "1234567890",
-  //   address: "123, Main Street, Bangalore",
-  // });
+  const [user, setUser] = useState({
+    name: "John Doe",
+    email: "john@example.com",
+    phone: "1234567890",
+    address: "123, Main Street, Bangalore",
+  });
 
   const [profilePhoto, setProfilePhoto] = useState(photo);
   const [isEdit, setIsEdit] = useState({

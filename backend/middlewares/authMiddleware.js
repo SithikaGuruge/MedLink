@@ -1,14 +1,10 @@
 import jwt from "jsonwebtoken";
 
+export const verifyToken = async (req, res, next) => {
+  const token = req.cookies.token;
 
-// Middleware to extract and verify JWT token
-export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  let token;
-
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    token = authHeader.split(" ")[1];
-  } else {
+  if (!token) {
+    console.log("no token");
     return res
       .status(401)
       .json({ error: "Authorization token missing or malformed" });
@@ -17,10 +13,9 @@ export const verifyToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    console.log("success", decoded);
     next();
   } catch (error) {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 };
-
-
