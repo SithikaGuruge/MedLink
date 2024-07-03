@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import getServiceProviderRoute from "./routes/serviceProvider.js";
-import router from "./routes/userRouter.js";
+import userRouter from "./routes/userRouter.js";
+import protectedRouter from "./routes/protectedRouter.js";
 import { connectDB } from "./db.js";
 
 dotenv.config();
@@ -30,5 +31,8 @@ app.use(express.json());
 app.use(cors());
 
 //routes
-app.use("/users", router);
+
 app.use("/serviceProvider", getServiceProviderRoute);
+app.use("/auth", userRouter);
+app.use("/protected", protectedRouter);
+
