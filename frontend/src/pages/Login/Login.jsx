@@ -34,7 +34,7 @@ const Login = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success:", data);
+          console.log("Success:");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -66,7 +66,7 @@ const Login = () => {
           }
         })
         .then((data) => {
-          console.log("Success:", data);
+          console.log("Success:");
         })
         .catch((error) => {
           console.error("Error:", error);
