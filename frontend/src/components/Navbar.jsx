@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,6 +14,7 @@ import logo from "../assets/logo.png";
 import cover from "../assets/person.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MenuIcon from "@mui/icons-material/Menu";
+import axios from "axios";
 
 const settings = ["Profile", "Logout"];
 
@@ -62,6 +63,46 @@ function Navbar() {
       handleCloseServicesMenu();
     }
   };
+
+  const [user, setUser] = React.useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    age: "",
+    photo: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) {
+        return;
+      }
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/protected/getUserbyID",
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          }
+        );
+        setUser({
+          name: res.data.name,
+          email: res.data.email,
+          phone: res.data.contactNumber,
+          address: res.data.address,
+          age: res.data.age,
+          photo: res.data.picture,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <AppBar position="fixed">
@@ -308,10 +349,12 @@ function Navbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }} className="flex flex-row">
-            <h1 className="text-black text-base pr-4 pt-1.5">Hi User!</h1>
+            <h1 className="text-black text-base pr-4 pt-1.5">
+              Hi {user.name || "user"}!
+            </h1>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={cover} />
+                <Avatar alt="Remy Sharp" src={user.photo} />
               </IconButton>
             </Tooltip>
             <Menu

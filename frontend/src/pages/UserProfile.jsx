@@ -5,6 +5,7 @@ import { MdEdit } from "react-icons/md";
 import axios from "axios";
 import { storage } from "../config/firebaseconfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Navbar from "../components/Navbar";
 
 const ProfilePicture = ({ photo, onPhotoChange, onFileChange }) => {
   const fileInputRef = useRef(null);
@@ -148,6 +149,12 @@ export default function UserProfile() {
         })
         .then((response) => {
           console.log(response);
+          if (response.status === 200) {
+            setMessage("User details updated successfully");
+            setTimeout(() => {
+              setMessage("");
+            }, 3000);
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -155,8 +162,12 @@ export default function UserProfile() {
     }
   };
 
+  const [message, setMessage] = useState("");
+
   return (
-    <div className="bg-blue-400 flex flex-col justify-center items-center h-screen">
+    <div>
+    <Navbar/>
+    <div className="bg-blue-400 flex flex-col justify-center items-center h-screen mt-5">
       <h1 className="text-3xl text-white mt-10">User Profile</h1>
       <div className="flex flex-col items-center justify-center border-2 border-black rounded-xl md:w-1/2 lg:w-1/4 w-3/4 py-8 my-8 bg-slate-300 bg-opacity-50 shadow-lg">
         <ProfilePicture
@@ -270,8 +281,10 @@ export default function UserProfile() {
               Cancel
             </button>
           </div>
+          {message && <p className="text-green-600 text-lg mt-4 text-center">{message}</p>}
         </div>
       </div>
+    </div>
     </div>
   );
 }
