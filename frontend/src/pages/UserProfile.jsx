@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import photo from "../assets/person.png";
+import defaultPhoto from "../assets/person.png";
 import { FaEdit } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import axios from "axios";
@@ -13,7 +13,12 @@ const ProfilePicture = ({ photo, onPhotoChange }) => {
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      onPhotoChange(URL.createObjectURL(event.target.files[0]));
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onPhotoChange(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -41,18 +46,40 @@ const ProfilePicture = ({ photo, onPhotoChange }) => {
 };
 
 export default function UserProfile() {
-  const [user1, setUser1] = useState(null);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    age: "",
+    
+  });
 
   useEffect(() => {
     const fetchData = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) {
+        console.log("No token found in local storage");
+        return;
+      }
       try {
         const res = await axios.get(
           "http://localhost:5000/protected/getUserbyID",
           {
-            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
           }
         );
-        setUser1(res.data);
+        setUser({
+          name: res.data.name,
+          email: res.data.email,
+          phone: res.data.contactNumber,
+          address: res.data.address,
+          age: res.data.age,
+          
+        });
+        setProfilePhoto(user.photo || defaultPhoto);
       } catch (err) {
         console.error(err);
       }
@@ -60,23 +87,35 @@ export default function UserProfile() {
 
     fetchData();
   }, []);
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "1234567890",
-    address: "123, Main Street, Bangalore",
-  });
 
-  const [profilePhoto, setProfilePhoto] = useState(photo);
+  const [profilePhoto, setProfilePhoto] = useState(defaultPhoto);
   const [isEdit, setIsEdit] = useState({
     name: false,
     email: false,
     phone: false,
     address: false,
+    age: false,
   });
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    await axios
+      .post("http://localhost:5000/protected/updateUserbyID", user, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+          "Access-control-Allow-Origin": "*", 
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -137,6 +176,25 @@ export default function UserProfile() {
             </span>
           </p>
           <p className="text-lg my-3">
+            Age:{" "}
+            <span className="text-blue-800">
+              <input
+                type="text"
+                name="age"
+                disabled={!isEdit.age}
+                value={user.age}
+                onChange={handleChange}
+                className="border-2 border-black hover:border-purple-500 rounded-md px-2 max-w-auto"
+              />
+              <button
+                onClick={() => setIsEdit({ ...isEdit, age: !isEdit.age })}
+                className="ml-2"
+              >
+                <FaEdit />
+              </button>
+            </span>
+          </p>
+          <p className="text-lg my-3">
             Address:{" "}
             <span className="text-blue-800">
               <input
@@ -158,10 +216,16 @@ export default function UserProfile() {
             </span>
           </p>
           <div className="flex flex-row justify-center mt-8 space-x-5">
-            <button className="rounded-md px-3 bg-blue-500 hover:bg-blue-600">
+            <button
+              className="rounded-md px-3 bg-blue-500 hover:bg-blue-600"
+              onClick={handleSave}
+            >
               Save
             </button>
-            <button className="rounded-md px-3 bg-yellow-500 hover:bg-yellow-600">
+            <button
+              className="rounded-md px-3 bg-yellow-500 hover:bg-yellow-600"
+              onClick={() => window.location.reload()}
+            >
               Cancel
             </button>
           </div>

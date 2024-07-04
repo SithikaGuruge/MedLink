@@ -43,7 +43,12 @@ const signup = async (req, res) => {
 
     const newUser = new User({
       name,
+      email,
       user: insertedId,
+      address: "",
+      contactNumber: "",
+      age: "",
+      picture: "",
     });
 
     await db.collection("Users").insertOne(newUser);
@@ -75,15 +80,9 @@ const login = async (req, res) => {
         expiresIn: process.env.JWT_EXPIRE || "1h",
       }
     );
+    res.setHeader("Authorization", `Bearer ${token}`);
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 3600000,
-      sameSite: 'lax', 
-    });
-    console.log("Token set:", token); 
-
+    console.log("Token sent in response headers:", token);
 
     res.status(200).json({ token });
   } catch (error) {

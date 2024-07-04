@@ -48,21 +48,30 @@ const Login = () => {
       })
         .then((response) => {
           if (response.status === 200) {
+            const authHeader = response.headers.get("authorization");
+            if (authHeader) {
+              const token = authHeader.split(" ")[1];
+              console.log("Token received:", token);
+              // Store token in local storage or session storage
+              localStorage.setItem("token", token);
+              window.location.href = "/";
+            } else {
+              console.error("Authorization header not found");
+            }
             return response.json();
           } else {
-            throw new Error('Login failed');
+            throw new Error("Login failed");
           }
         })
         .then((data) => {
           console.log("Success:", data);
-          window.location.href = "/";
-          
+         
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-    } 
-  }
+    }
+  };
   return (
     <div className="wrapper">
       <div className="container">
