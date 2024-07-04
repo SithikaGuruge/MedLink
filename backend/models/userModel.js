@@ -24,10 +24,9 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  picture:{
-    type:String
-  
-  }
+  picture: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("Users", userSchema);

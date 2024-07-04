@@ -4,8 +4,28 @@ import user_icon from "../../assets/LoginSignup/person.png";
 import email_icon from "../../assets/LoginSignup/email.png";
 import password_icon from "../../assets/LoginSignup/password.png";
 import login_background from "../../assets/LoginSignup/loginBackground.jpeg";
-import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    paddingLeft: theme.spacing(10),
+    paddingRight: theme.spacing(10),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
 const Login = () => {
   const [action, setAction] = useState("Sign Up");
@@ -16,6 +36,18 @@ const Login = () => {
   const handleTabClick = (selectedAction) => {
     setAction(selectedAction);
   };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    window.location.reload();
+  };
+
+  const [message, setMessage] = useState("");
 
   const handleSubmit = () => {
     const details = { email, password };
@@ -32,9 +64,14 @@ const Login = () => {
         },
         body: JSON.stringify(details),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Success:", data);
+        .then((response) => {
+          if (response.status === 201) {
+            setMessage("User created successfully");
+            handleClickOpen();
+          } else if (response.status === 400){
+            setMessage("Email Already Exists");
+            handleClickOpen();
+          }
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -61,12 +98,10 @@ const Login = () => {
               console.error("Authorization header not found");
             }
             return response.json();
-          } else {
-            throw new Error("Login failed");
+          } else if (response.status === 400) {
+            setMessage("Invalid credentials");
+            handleClickOpen();
           }
-        })
-        .then((data) => {
-          console.log("Success:", data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -143,6 +178,35 @@ const Login = () => {
           <img src={login_background} alt="Example" />
         </div>
       </div>
+      <BootstrapDialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+          Alert
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers>
+          <Typography gutterBottom>{message}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            OK
+          </Button>
+        </DialogActions>
+      </BootstrapDialog>
       <Footer />
     </div>
   );
