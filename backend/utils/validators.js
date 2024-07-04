@@ -1,14 +1,14 @@
 import joi from "joi";
 
 const userSchema = joi.object({
-  username: joi.string().alphanum().min(3).max(30).required(),
   name: joi.string().required(),
-  age: joi.number().integer().min(1).max(100).required(),
-  contactNumber: joi.string().min(10).max(10).required(),
 });
 
 const userAccDetailsSchema = joi.object({
-  username: joi.string().alphanum().min(3).max(30).required(),
+  email: joi
+    .string()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "lk"] } })
+    .required(),
   password: joi
     .string()
     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
@@ -24,19 +24,11 @@ const userAccDetailsSchema = joi.object({
   role: joi.string().required(),
 });
 
-const validateUser = ({
-  name,
-  username,
-  age,
-  contactNumber,
-  role,
-  password,
-  passwordConfirm,
-}) => {
+const validateUser = ({ name, email, role, password, passwordConfirm }) => {
   const { error } =
-    userSchema.validate({ username, name, age, contactNumber }) ||
+    userSchema.validate({ name }) ||
     userAccDetailsSchema.validate({
-      username,
+      email,
       password,
       passwordConfirm,
       role,

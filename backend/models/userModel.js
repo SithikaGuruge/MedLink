@@ -10,14 +10,24 @@ const userSchema = new mongoose.Schema({
     required: [true, "Object ID is required!"],
     unique: true,
   },
+  email: {
+    type: String,
+    required: [true, "Please enter your email!"],
+    unique: true,
+  },
   age: {
-    type: Number,
-    required: [true, "Please tell us your age!"],
+    type: String,
   },
   contactNumber: {
     type: String,
-    required: [true, "Please tell us your contact number!"],
   },
+  address: {
+    type: String,
+  },
+  picture:{
+    type:String
+  
+  }
 });
 
 const User = mongoose.model("Users", userSchema);

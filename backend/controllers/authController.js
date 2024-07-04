@@ -9,21 +9,11 @@ dotenv.config();
 
 const signup = async (req, res) => {
   try {
-    const {
-      name,
-      username,
-      age,
-      contactNumber,
-      role,
-      password,
-      passwordConfirm,
-    } = req.body;
+    const { name, email, role, password, passwordConfirm,picture } = req.body;
 
     const error = validateUser({
       name,
-      username,
-      age,
-      contactNumber,
+      email,
       role,
       password,
       passwordConfirm,
@@ -32,7 +22,7 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
 
     const existingUser = await db.collection("UserAccountDetails").findOne({
-      username,
+      email,
     });
 
     if (existingUser) {
@@ -42,7 +32,7 @@ const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const newUserAccDetails = new UserAccDetails({
-      username,
+      email,
       role,
       password: hashedPassword,
     });
@@ -53,9 +43,12 @@ const signup = async (req, res) => {
 
     const newUser = new User({
       name,
+      email,
       user: insertedId,
-      age,
-      contactNumber,
+      address: "",
+      contactNumber: "",
+      age: "",
+      picture: picture,
     });
 
     await db.collection("Users").insertOne(newUser);
@@ -67,11 +60,9 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await db
-      .collection("UserAccountDetails")
-      .findOne({ username });
+    const user = await db.collection("UserAccountDetails").findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -83,18 +74,15 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { username, userId: user._id },
+      { email, userId: user._id },
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_EXPIRE || "1h",
       }
     );
+    res.setHeader("Authorization", `Bearer ${token}`);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      maxAge: 3600000, 
-    });
+    console.log("Token sent in response headers:", token);
 
     res.status(200).json({ token });
   } catch (error) {
