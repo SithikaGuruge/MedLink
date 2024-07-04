@@ -23,7 +23,7 @@ export const updateUserbyID = async (req, res) => {
           contactNumber: phone,
           address: address,
           age: age,
-          
+          picture: photo,
         },
       }
     );

@@ -9,7 +9,7 @@ dotenv.config();
 
 const signup = async (req, res) => {
   try {
-    const { name, email, role, password, passwordConfirm } = req.body;
+    const { name, email, role, password, passwordConfirm,picture } = req.body;
 
     const error = validateUser({
       name,
@@ -48,7 +48,7 @@ const signup = async (req, res) => {
       address: "",
       contactNumber: "",
       age: "",
-      picture: "",
+      picture: picture,
     });
 
     await db.collection("Users").insertOne(newUser);

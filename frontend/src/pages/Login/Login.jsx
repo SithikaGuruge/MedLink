@@ -22,6 +22,8 @@ const Login = () => {
     if (action === "Sign Up") {
       details.name = name;
       details.role = "customer";
+      details.picture =
+        "https://firebasestorage.googleapis.com/v0/b/medilink-812fc.appspot.com/o/person.png?alt=media&token=510412a5-bfd5-423d-b65d-f3b2a206e88d";
       // Post signup details
       fetch("http://localhost:5000/auth/signup", {
         method: "POST",
@@ -65,7 +67,6 @@ const Login = () => {
         })
         .then((data) => {
           console.log("Success:", data);
-         
         })
         .catch((error) => {
           console.error("Error:", error);

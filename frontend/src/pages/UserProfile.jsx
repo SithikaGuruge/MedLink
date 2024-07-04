@@ -3,8 +3,10 @@ import defaultPhoto from "../assets/person.png";
 import { FaEdit } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import axios from "axios";
+import { storage } from "../config/firebaseconfig";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-const ProfilePicture = ({ photo, onPhotoChange }) => {
+const ProfilePicture = ({ photo, onPhotoChange, onFileChange }) => {
   const fileInputRef = useRef(null);
 
   const handleIconClick = () => {
@@ -13,12 +15,9 @@ const ProfilePicture = ({ photo, onPhotoChange }) => {
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
+      onPhotoChange(URL.createObjectURL(event.target.files[0]));
       const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onPhotoChange(reader.result);
-      };
-      reader.readAsDataURL(file);
+      onFileChange(file);
     }
   };
 
@@ -38,6 +37,7 @@ const ProfilePicture = ({ photo, onPhotoChange }) => {
       <input
         type="file"
         ref={fileInputRef}
+        accept="image/*"
         className="hidden"
         onChange={handleFileChange}
       />
@@ -46,13 +46,15 @@ const ProfilePicture = ({ photo, onPhotoChange }) => {
 };
 
 export default function UserProfile() {
+  const [profilePhoto, setProfilePhoto] = useState(defaultPhoto);
+  const [file, setFile] = useState(null);
+
   const [user, setUser] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
     age: "",
-    
   });
 
   useEffect(() => {
@@ -77,9 +79,9 @@ export default function UserProfile() {
           phone: res.data.contactNumber,
           address: res.data.address,
           age: res.data.age,
-          
+          photo: res.data.picture,
         });
-        setProfilePhoto(user.photo || defaultPhoto);
+        setProfilePhoto(res.data.picture);
       } catch (err) {
         console.error(err);
       }
@@ -88,7 +90,6 @@ export default function UserProfile() {
     fetchData();
   }, []);
 
-  const [profilePhoto, setProfilePhoto] = useState(defaultPhoto);
   const [isEdit, setIsEdit] = useState({
     name: false,
     email: false,
@@ -101,28 +102,68 @@ export default function UserProfile() {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSave = async () => {
-    await axios
-      .post("http://localhost:5000/protected/updateUserbyID", user, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json",
-          "Access-control-Allow-Origin": "*", 
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
+  const fileSave = async () => {
+    const storageRef = ref(storage, `images/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        console.log(snapshot);
+      },
+      (error) => {
         console.error(error);
-      });
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        setProfilePhoto(downloadURL);
+        user.photo = downloadURL; // Update user photo with Firebase URL
+        await axios.post(
+          "http://localhost:5000/protected/updateUserbyID",
+          user,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Accept: "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        );
+        console.log("File available at", downloadURL);
+      }
+    );
+  };
+
+  const handleSave = async () => {
+    if (file) {
+      await fileSave();
+    } else {
+      await axios
+        .post("http://localhost:5000/protected/updateUserbyID", user, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   return (
     <div className="bg-blue-400 flex flex-col justify-center items-center h-screen">
       <h1 className="text-3xl text-white mt-10">User Profile</h1>
       <div className="flex flex-col items-center justify-center border-2 border-black rounded-xl md:w-1/2 lg:w-1/4 w-3/4 py-8 my-8 bg-slate-300 bg-opacity-50 shadow-lg">
-        <ProfilePicture photo={profilePhoto} onPhotoChange={setProfilePhoto} />
+        <ProfilePicture
+          photo={profilePhoto}
+          onPhotoChange={setProfilePhoto}
+          onFileChange={setFile}
+        />
         <div className="my-6">
           <p className="text-lg my-3">
             User Name:{" "}
