@@ -2,8 +2,7 @@ import React from "react";
 import HomePage from "./pages/HomePage";
 import UserProfile from "./pages/UserProfile";
 import Login from "./pages/Login/Login";
-import PaymentGateway from "./components/PaymentGateway";
-import Channeling from "./components/Channeling";
+import ChannelingPage from "./pages/ChannelingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
@@ -14,8 +13,7 @@ const App = () => {
         <Route path="/Profile" element={<UserProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<h1>Not Found</h1>} />
-        <Route path="/payment" element={<PaymentGateway />} />
-        <Route path="/channeling" element={<Channeling />} />
+        <Route path="/channeling" element={<ChannelingPage />} />
       </Routes>
     </BrowserRouter>
   );
