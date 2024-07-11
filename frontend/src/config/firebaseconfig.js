@@ -3,12 +3,12 @@ import { getStorage } from "firebase/storage";
 import "firebase/storage";
 
 const firebaseConfig = {
- apiKey: "AIzaSyB_Ndnv41ZOpNZbmLjvREZdQt6iYj3nWEk",
-  authDomain: "medilink-812fc.firebaseapp.com",
-  projectId: "medilink-812fc",
-  storageBucket: "medilink-812fc.appspot.com",
-  messagingSenderId: "882292413623",
-  appId: "1:882292413623:web:a2dd387b03c2b545442932"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
