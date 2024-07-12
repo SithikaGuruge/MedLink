@@ -3,8 +3,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ScanCards from "../components/ScanCards";
 import SearchBar from "../components/SearchBar";
+import { useNavigate } from "react-router-dom";
 
 export default function ScansPage() {
+  const navigation = useNavigate();
+
   const data = [
     {
       Name: "MRI Scan",
@@ -80,6 +83,14 @@ export default function ScansPage() {
         Scans
       </h1>
       <SearchBar />
+      <button
+        onClick={() => {
+          navigation("/search-scan");
+        }}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded-full mt-5 ml-5"
+      >
+        Go to adavanced search
+      </button>
       <h2 className="text-center mt-5 text-2xl font-semibold py-4">
         {" "}
         Available Scans
