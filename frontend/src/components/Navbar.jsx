@@ -19,6 +19,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 const settings = ["Profile", "Logout"];
 
@@ -123,9 +125,22 @@ function Navbar() {
     fetchData();
   }, []);
 
+  const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1280,
+        xl: 1920,
+        '2xl': 2560, // Custom breakpoint
+      },
+    },
+  });
+
   return (
     <AppBar position="fixed">
-      <Container maxWidth="xl" className="bg-white font-bold ">
+      <Container maxWidth ="2xl" className="bg-white font-bold">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
