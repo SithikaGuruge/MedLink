@@ -9,12 +9,21 @@ dotenv.config();
 
 const signup = async (req, res) => {
   try {
-    const { name, email, role, password, passwordConfirm,picture,Type,userSub } = req.body;
+    const {
+      name,
+      email,
+      role,
+      password,
+      passwordConfirm,
+      picture,
+      Type,
+      userSub,
+    } = req.body;
 
-    if (Type === 'email_joined'){
-      const existingUser = await db.collection("UserAccountDetails").findOne({
-        email,
-      });
+    if (Type === "email_joined") {
+      const existingUser = await db
+        .collection("UserAccountDetails")
+        .findOne({ email });
 
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
@@ -39,13 +48,11 @@ const signup = async (req, res) => {
         address: "",
         contactNumber: "",
         age: "",
-        picture: picture,
-      
+        picture,
       });
       await db.collection("Users").insertOne(newUser);
-      res.status(201).json({ message: "User created successfully" });
-    }
-    else {
+      return res.status(201).json({ message: "User created successfully" });
+    } else {
       const error = validateUser({
         name,
         email,
@@ -53,12 +60,13 @@ const signup = async (req, res) => {
         password,
         passwordConfirm,
       });
-      if (error)
+      if (error) {
         return res.status(400).json({ message: error.details[0].message });
+      }
 
-      const existingUser = await db.collection("UserAccountDetails").findOne({
-        email,
-      });
+      const existingUser = await db
+        .collection("UserAccountDetails")
+        .findOne({ email });
 
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
@@ -83,13 +91,11 @@ const signup = async (req, res) => {
         address: "",
         contactNumber: "",
         age: "",
-        picture: picture,
-      
+        picture,
       });
+      await db.collection("Users").insertOne(newUser);
+      return res.status(201).json({ message: "User created successfully" });
     }
-
-    await db.collection("Users").insertOne(newUser);
-    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -97,24 +103,22 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password, Type, userSub} = req.body;
+    const { email, password, Type, userSub } = req.body;
     const user = await db.collection("UserAccountDetails").findOne({ email });
-    if (Type === 'email_joined'){
-      console.log('email login')
+    if (Type === "email_joined") {
+      console.log("email login");
 
       const isPasswordCorrect = await bcrypt.compare(userSub, user.password);
       if (!isPasswordCorrect) {
         return res.status(400).json({ message: "Invalid credentials" });
-      
       }
       if (!user) {
-        return res.status(400).json({ message: "Sign-up with your Google account first!" });
+        return res
+          .status(400)
+          .json({ message: "Sign-up with your Google account first!" });
       }
-    }
-
-    else{
-      console.log('normal login')
-      
+    } else {
+      console.log("normal login");
 
       if (!user) {
         return res.status(400).json({ message: "Invalid credentials" });
@@ -123,11 +127,10 @@ const login = async (req, res) => {
       const isPasswordCorrect = await bcrypt.compare(password, user.password);
       if (!isPasswordCorrect) {
         return res.status(400).json({ message: "Invalid credentials" });
-      
       }
     }
-    
-    console.log('hi')
+
+    console.log("hi");
 
     const token = jwt.sign(
       { email, userId: user._id },
