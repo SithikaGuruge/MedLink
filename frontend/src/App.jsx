@@ -11,6 +11,7 @@ import MedicinePage from "./pages/SearchMedicinePage";
 import ScanPage from "./pages/SearchScansPage";
 import TestPage from "./pages/SearchTestsPage";
 import ScansPage from "./pages/ScansPage";
+import TestsPage from "./pages/TestsPage";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/medicine" element={<MedicinePage />} />
         <Route path="/search-scan" element={<ScanPage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/search-test" element={<TestsPage />} />
       </Routes>
     </BrowserRouter>
   );
