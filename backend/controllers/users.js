@@ -1,7 +1,6 @@
-import { db } from '../db.js';
+import { db } from "../db.js";
 
-
-export const getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     const users = await db.collection("Users").find({}).toArray();
     res.status(200).json(users);
@@ -10,4 +9,4 @@ export const getUsers = async (req, res) => {
   }
 };
 
-
+export { getUsers };

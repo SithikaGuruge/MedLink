@@ -1,14 +1,17 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
-import getUsersRoute from "./routes/users.js";
+import cookieParser from "cookie-parser";
 import getServiceProviderRoute from "./routes/serviceProvider.js";
+import paymentgatewayRouter from "./routes/paymentRouter.js";
+import userRouter from "./routes/userRouter.js";
+import protectedRouter from "./routes/protectedRouter.js";
 import { connectDB } from "./db.js";
 
 dotenv.config();
-const port = 5002;
+const port = process.env.PORT || 5000;
 const app = express();
+app.use(cookieParser());
 
 //start the server and connect to mongodb
 
@@ -26,9 +29,18 @@ async function startServer() {
 startServer();
 
 //middlewares
-app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    exposedHeaders: ["Authorization"],
+  })
+);
 
 //routes
-app.use("/users", getUsersRoute);
+app.use("/payment", paymentgatewayRouter);
+app.use(express.json());
 app.use("/serviceProvider", getServiceProviderRoute);
+app.use("/auth", userRouter);
+app.use("/protected", protectedRouter);

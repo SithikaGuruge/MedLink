@@ -10,6 +10,7 @@ import Clinics from "../components/Home/clinics";
 import Channel from "../components/Home/channel";
 
 export default function HomePage() {
+  
   return (
     <div>
     <Navbar />
