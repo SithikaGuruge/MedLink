@@ -4,6 +4,12 @@ import UserProfile from "./pages/UserProfile";
 import Login from "./pages/Login/Login";
 import ChannelingPage from "./pages/ChannelingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DisplayMedicinePage from "./pages/medicine";
+import ProductPage from "./pages/product";
+import ScanResultsPage from "./pages/ScansResultPage";
+import MedicinePage from "./pages/SearchMedicinePage";
+import ScanPage from "./pages/SearchScansPage";
+import TestPage from "./pages/SearchTestsPage";
 
 const App = () => {
   return (
@@ -14,6 +20,12 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/channeling" element={<ChannelingPage />} />
+        <Route path="/display-medicine" element={<DisplayMedicinePage />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="/scan-results" element={<ScanResultsPage />} />
+        <Route path="/medicine" element={<MedicinePage />} />
+        <Route path="/scan" element={<ScanPage />} />
+        <Route path="/test" element={<TestPage />} />
       </Routes>
     </BrowserRouter>
   );
