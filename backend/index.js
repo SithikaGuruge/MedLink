@@ -6,6 +6,7 @@ import getServiceProviderRoute from "./routes/serviceProvider.js";
 import paymentgatewayRouter from "./routes/paymentRouter.js";
 import userRouter from "./routes/userRouter.js";
 import protectedRouter from "./routes/protectedRouter.js";
+import doctorRouter from "./routes/doctorsRouter.js";
 import { connectDB } from "./db.js";
 
 dotenv.config();
@@ -44,3 +45,4 @@ app.use(express.json());
 app.use("/serviceProvider", getServiceProviderRoute);
 app.use("/auth", userRouter);
 app.use("/protected", protectedRouter);
+app.use("/doctor", doctorRouter);

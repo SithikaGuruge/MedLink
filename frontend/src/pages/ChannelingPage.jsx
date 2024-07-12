@@ -13,7 +13,7 @@ export default function ChannelingPage() {
         <div className="flex flex-col">
         <Navbar />
         <h1 className="mt-20 md:text-5xl text-xl text-center font-bold py-4"> Channeling Centres</h1>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 lg:gap-10 mx-auto py-10">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 lg:gap-16 mx-auto py-10">
         {data.map((item) => (
             <ChannelingCards
             key={item._id}
