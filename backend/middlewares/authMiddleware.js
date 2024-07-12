@@ -8,7 +8,7 @@ export const verifyToken = (req, res, next) => {
   } else {
     return res
       .status(401)
-      .json({ error: "Authorization token missing or malformed" });
+      .json({ message: "Authorization token missing or malformed" });
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

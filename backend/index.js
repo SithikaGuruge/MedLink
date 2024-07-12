@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
 import getServiceProviderRoute from "./routes/serviceProvider.js";
+import paymentgatewayRouter from "./routes/paymentRouter.js";
 import userRouter from "./routes/userRouter.js";
 import protectedRouter from "./routes/protectedRouter.js";
 import { connectDB } from "./db.js";
@@ -29,7 +29,7 @@ async function startServer() {
 startServer();
 
 //middlewares
-app.use(express.json());
+
 app.use(
   cors({
     origin: "*",
@@ -39,7 +39,8 @@ app.use(
 );
 
 //routes
-
+app.use("/payment", paymentgatewayRouter);
+app.use(express.json());
 app.use("/serviceProvider", getServiceProviderRoute);
 app.use("/auth", userRouter);
 app.use("/protected", protectedRouter);

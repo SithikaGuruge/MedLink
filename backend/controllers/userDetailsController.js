@@ -28,7 +28,9 @@ export const updateUserbyID = async (req, res) => {
       }
     );
     res.status(200).json(user);
+    console.log("User updated successfully");
   } catch (error) {
     res.status(500).json({ error: error.message });
+    console.log("User update failed");
   }
 };

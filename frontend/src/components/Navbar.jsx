@@ -116,7 +116,7 @@ function Navbar() {
           photo: res.data.picture,
         });
       } catch (err) {
-        console.error(err);
+        //console.error(err);
       }
     };
 

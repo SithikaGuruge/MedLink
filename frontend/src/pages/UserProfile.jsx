@@ -47,6 +47,8 @@ const ProfilePicture = ({ photo, onPhotoChange, onFileChange }) => {
 };
 
 export default function UserProfile() {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  console.log("url", apiUrl);
   const [profilePhoto, setProfilePhoto] = useState(defaultPhoto);
   const [file, setFile] = useState(null);
 
@@ -66,14 +68,11 @@ export default function UserProfile() {
         return;
       }
       try {
-        const res = await axios.get(
-          "http://localhost:5000/protected/getUserbyID",
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          }
-        );
+        const res = await axios.get(`${apiUrl}/protected/getUserbyID`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
         setUser({
           name: res.data.name,
           email: res.data.email,
@@ -119,8 +118,36 @@ export default function UserProfile() {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         setProfilePhoto(downloadURL);
         user.photo = downloadURL; // Update user photo with Firebase URL
-        await axios.post(
-          "http://localhost:5000/protected/updateUserbyID",
+        const response = await axios.post(`${apiUrl}/protected/updateUserbyID`, user, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+        if (response.status === 200) {
+          setMessage("User details updated successfully");
+          console.log("File available at", downloadURL);
+          setTimeout(() => {
+            setMessage("");
+          }, 3000);
+        } else {
+          setMessage("Failed to update user details. Please try again.");
+        }
+        
+      }
+    );
+  };
+
+  const handleSave = async () => {
+    setMessage("Updating user details...");
+
+    try {
+      if (file) {
+        await fileSave();
+      } else {
+        const response = await axios.post(
+          `${apiUrl}/protected/updateUserbyID`,
           user,
           {
             headers: {
@@ -130,35 +157,21 @@ export default function UserProfile() {
             },
           }
         );
-        console.log("File available at", downloadURL);
-      }
-    );
-  };
 
-  const handleSave = async () => {
-    if (file) {
-      await fileSave();
-    } else {
-      await axios
-        .post("http://localhost:5000/protected/updateUserbyID", user, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            setMessage("User details updated successfully");
-            setTimeout(() => {
-              setMessage("");
-            }, 3000);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+        console.log("Response:", response);
+
+        if (response.status === 200) {
+          setMessage("User details updated successfully");
+          setTimeout(() => {
+            setMessage("");
+          }, 3000);
+        } else {
+          setMessage("Failed to update user details. Please try again.");
+        }
+      }
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      setMessage("An error occurred while updating user details.");
     }
   };
 
@@ -166,125 +179,130 @@ export default function UserProfile() {
 
   return (
     <div>
-    <Navbar/>
-    <div className="bg-blue-400 flex flex-col justify-center items-center h-screen mt-5">
-      <h1 className="text-3xl text-white mt-10">User Profile</h1>
-      <div className="flex flex-col items-center justify-center border-2 border-black rounded-xl md:w-1/2 lg:w-1/4 w-3/4 py-8 my-8 bg-slate-300 bg-opacity-50 shadow-lg">
-        <ProfilePicture
-          photo={profilePhoto}
-          onPhotoChange={setProfilePhoto}
-          onFileChange={setFile}
-        />
-        <div className="my-6">
-          <p className="text-lg my-3">
-            User Name:{" "}
-            <span className="text-blue-800">
-              <input
-                type="text"
-                name="name"
-                disabled={!isEdit.name}
-                value={user.name}
-                onChange={handleChange}
-                className="border-2 border-black hover:border-purple-500 rounded-md px-2"
-              />
+      <Navbar />
+      <div className="bg-blue-400 flex flex-col justify-center items-center h-screen mt-5">
+        <h1 className="text-3xl text-white mt-10">User Profile</h1>
+        <div className="flex flex-col items-center justify-center border-2 border-black rounded-xl md:w-1/2 lg:w-1/4 w-3/4 py-8 my-8 bg-slate-300 bg-opacity-50 shadow-lg">
+          <ProfilePicture
+            photo={profilePhoto}
+            onPhotoChange={setProfilePhoto}
+            onFileChange={setFile}
+          />
+          <div className="my-6">
+            <p className="text-lg my-3">
+              User Name:{" "}
+              <span className="text-blue-800">
+                <input
+                  type="text"
+                  name="name"
+                  disabled={!isEdit.name}
+                  value={user.name}
+                  onChange={handleChange}
+                  className="border-2 border-black hover:border-purple-500 rounded-md px-2"
+                />
+                <button
+                  onClick={() => setIsEdit({ ...isEdit, name: !isEdit.name })}
+                  className="ml-2"
+                >
+                  <FaEdit />
+                </button>
+              </span>
+            </p>
+            <p className="text-lg my-3">
+              Email:{" "}
+              <span className="text-blue-800">
+                <input
+                  type="text"
+                  name="email"
+                  disabled
+                  value={user.email}
+                  onChange={handleChange}
+                  className="border-2 border-black rounded-md px-2"
+                />
+              </span>
+            </p>
+            <p className="text-lg my-3">
+              Phone:{" "}
+              <span className="text-blue-800">
+                <input
+                  type="text"
+                  name="phone"
+                  disabled={!isEdit.phone}
+                  value={user.phone}
+                  onChange={handleChange}
+                  className="border-2 border-black hover:border-purple-500 rounded-md px-2"
+                />
+                <button
+                  onClick={() => setIsEdit({ ...isEdit, phone: !isEdit.phone })}
+                  className="ml-2"
+                >
+                  <FaEdit />
+                </button>
+              </span>
+            </p>
+            <p className="text-lg my-3">
+              Age:{" "}
+              <span className="text-blue-800">
+                <input
+                  type="text"
+                  name="age"
+                  disabled={!isEdit.age}
+                  value={user.age}
+                  onChange={handleChange}
+                  className="border-2 border-black hover:border-purple-500 rounded-md px-2 max-w-auto"
+                />
+                <button
+                  onClick={() => setIsEdit({ ...isEdit, age: !isEdit.age })}
+                  className="ml-2"
+                >
+                  <FaEdit />
+                </button>
+              </span>
+            </p>
+            <p className="text-lg my-3">
+              Address:{" "}
+              <span className="text-blue-800">
+                <input
+                  type="text"
+                  name="address"
+                  disabled={!isEdit.address}
+                  value={user.address}
+                  onChange={handleChange}
+                  className="border-2 border-black hover:border-purple-500 rounded-md px-2 max-w-auto"
+                />
+                <button
+                  onClick={() =>
+                    setIsEdit({ ...isEdit, address: !isEdit.address })
+                  }
+                  className="ml-2"
+                >
+                  <FaEdit />
+                </button>
+              </span>
+            </p>
+            <div className="flex flex-row justify-center mt-8 space-x-5">
               <button
-                onClick={() => setIsEdit({ ...isEdit, name: !isEdit.name })}
-                className="ml-2"
+                className="rounded-md px-3 bg-blue-500 hover:bg-blue-600"
+                onClick={handleSave}
+                disabled={message === "Updating user details..."}
               >
-                <FaEdit />
+                Save
               </button>
-            </span>
-          </p>
-          <p className="text-lg my-3">
-            Email:{" "}
-            <span className="text-blue-800">
-              <input
-                type="text"
-                name="email"
-                disabled
-                value={user.email}
-                onChange={handleChange}
-                className="border-2 border-black rounded-md px-2"
-              />
-            </span>
-          </p>
-          <p className="text-lg my-3">
-            Phone:{" "}
-            <span className="text-blue-800">
-              <input
-                type="text"
-                name="phone"
-                disabled={!isEdit.phone}
-                value={user.phone}
-                onChange={handleChange}
-                className="border-2 border-black hover:border-purple-500 rounded-md px-2"
-              />
               <button
-                onClick={() => setIsEdit({ ...isEdit, phone: !isEdit.phone })}
-                className="ml-2"
+                className="rounded-md px-3 bg-yellow-500 hover:bg-yellow-600"
+                onClick={() => window.location.reload()}
               >
-                <FaEdit />
+                Cancel
               </button>
-            </span>
-          </p>
-          <p className="text-lg my-3">
-            Age:{" "}
-            <span className="text-blue-800">
-              <input
-                type="text"
-                name="age"
-                disabled={!isEdit.age}
-                value={user.age}
-                onChange={handleChange}
-                className="border-2 border-black hover:border-purple-500 rounded-md px-2 max-w-auto"
-              />
-              <button
-                onClick={() => setIsEdit({ ...isEdit, age: !isEdit.age })}
-                className="ml-2"
-              >
-                <FaEdit />
-              </button>
-            </span>
-          </p>
-          <p className="text-lg my-3">
-            Address:{" "}
-            <span className="text-blue-800">
-              <input
-                type="text"
-                name="address"
-                disabled={!isEdit.address}
-                value={user.address}
-                onChange={handleChange}
-                className="border-2 border-black hover:border-purple-500 rounded-md px-2 max-w-auto"
-              />
-              <button
-                onClick={() =>
-                  setIsEdit({ ...isEdit, address: !isEdit.address })
-                }
-                className="ml-2"
-              >
-                <FaEdit />
-              </button>
-            </span>
-          </p>
-          <div className="flex flex-row justify-center mt-8 space-x-5">
-            <button
-              className="rounded-md px-3 bg-blue-500 hover:bg-blue-600"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
-              className="rounded-md px-3 bg-yellow-500 hover:bg-yellow-600"
-              onClick={() => window.location.reload()}
-            >
-              Cancel
-            </button>
+            </div>
+            {message && (
+              <p className="text-green-600 text-lg mt-4 text-center">
+                {message}
+              </p>
+            )}
           </div>
-          {message && <p className="text-green-600 text-lg mt-4 text-center">{message}</p>}
         </div>
       </div>
-    </div>
     </div>
   );
 }
