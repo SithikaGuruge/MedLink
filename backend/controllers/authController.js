@@ -9,7 +9,7 @@ dotenv.config();
 
 const signup = async (req, res) => {
   try {
-    const { name, email, role, password, passwordConfirm,picture,Type,userId } = req.body;
+    const { name, email, role, password, passwordConfirm,picture,Type,userSub } = req.body;
 
     if (Type === 'email_joined'){
       const existingUser = await db.collection("UserAccountDetails").findOne({
@@ -20,7 +20,7 @@ const signup = async (req, res) => {
         return res.status(400).json({ message: "User already exists" });
       }
 
-      const hashedPassword = await bcrypt.hash(userId, 12);
+      const hashedPassword = await bcrypt.hash(userSub, 12);
 
       const newUserAccDetails = new UserAccDetails({
         email,
@@ -97,13 +97,12 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password, Type, userId} = req.body;
-
+    const { email, password, Type, userSub} = req.body;
+    const user = await db.collection("UserAccountDetails").findOne({ email });
     if (Type === 'email_joined'){
       console.log('email login')
-      const user = await db.collection("UserAccountDetails").findOne({ email });
 
-      const isPasswordCorrect = await bcrypt.compare(userId, user.password);
+      const isPasswordCorrect = await bcrypt.compare(userSub, user.password);
       if (!isPasswordCorrect) {
         return res.status(400).json({ message: "Invalid credentials" });
       
@@ -114,8 +113,8 @@ const login = async (req, res) => {
     }
 
     else{
-
-      const user = await db.collection("UserAccountDetails").findOne({ email });
+      console.log('normal login')
+      
 
       if (!user) {
         return res.status(400).json({ message: "Invalid credentials" });
@@ -128,6 +127,8 @@ const login = async (req, res) => {
       }
     }
     
+    console.log('hi')
+
     const token = jwt.sign(
       { email, userId: user._id },
       process.env.JWT_SECRET,

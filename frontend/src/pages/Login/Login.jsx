@@ -52,7 +52,9 @@ const Login = () => {
 
   const handleSubmit = () => {
     const details = { email, password };
+    
     if (action === "Sign Up") {
+      
       details.name = name;
       details.role = "customer";
       details.picture =
@@ -79,6 +81,7 @@ const Login = () => {
         });
     } else {
       // Post login details
+      
       fetch("http://localhost:5000/auth/login", {
         method: "POST",
         headers: {

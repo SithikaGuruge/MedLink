@@ -16,7 +16,7 @@ function GoogleBtn({action,handleClickOpen,setMessage}) {
                         const details = {
                             name,
                             email,
-                            userId: sub,
+                            userSub: sub,
                             picture,
                             Type: "email_joined",
                             role: "customer"
@@ -50,7 +50,7 @@ function GoogleBtn({action,handleClickOpen,setMessage}) {
                         const details = {
                             name,
                             email,
-                            userId: sub,
+                            userSub: sub,
                             Type: "email_joined",
                         };
                         console.log(details)
