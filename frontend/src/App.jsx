@@ -10,8 +10,12 @@ import ScanResultsPage from "./pages/ScansResultPage";
 import MedicinePage from "./pages/SearchMedicinePage";
 import ScanPage from "./pages/SearchScansPage";
 import TestPage from "./pages/SearchTestsPage";
+
+import ScansPage from "./pages/ScansPage";
+
 import ChannelingCenterPage from "./pages/ChannelingCenterPage";
 import ChannelingDoctorPage from "./pages/ChannelDoctorPage";
+
 
 const App = () => {
   return (
@@ -24,9 +28,10 @@ const App = () => {
         <Route path="/channeling" element={<ChannelingPage />} />
         <Route path="/display-medicine" element={<DisplayMedicinePage />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/scan" element={<ScansPage />} />
         <Route path="/scan-results" element={<ScanResultsPage />} />
         <Route path="/medicine" element={<MedicinePage />} />
-        <Route path="/scan" element={<ScanPage />} />
+        <Route path="/search-scan" element={<ScanPage />} />
         <Route path="/test" element={<TestPage />} />
         <Route
           path="/channeling/center/:id"
