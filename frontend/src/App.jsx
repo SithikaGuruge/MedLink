@@ -12,6 +12,7 @@ import ScanPage from "./pages/SearchScansPage";
 import TestPage from "./pages/SearchTestsPage";
 
 import ScansPage from "./pages/ScansPage";
+import TestsPage from "./pages/TestsPage";
 
 import ChannelingCenterPage from "./pages/ChannelingCenterPage";
 import ChannelingDoctorPage from "./pages/ChannelDoctorPage";
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/medicine" element={<MedicinePage />} />
         <Route path="/search-scan" element={<ScanPage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/search-test" element={<TestsPage />} />
         <Route
           path="/channeling/center/:id"
           element={<ChannelingCenterPage />}

@@ -1,7 +1,9 @@
 import React from 'react'
 import image from "../../assets/Tests.jpeg"
+import { useNavigate } from "react-router-dom";
 
 export default function Tests() {
+  const navigation = useNavigate();
   return (
     <div id="section-1" className="py-10 bg-blue-300 ">
       <hr className="bg-white h-1 w-1/2 mx-auto" />
@@ -16,7 +18,9 @@ export default function Tests() {
     
       </div>
       <div className="flex justify-center">
-      <button className="bg-white rounded-lg py-2 md:px-6 px-2 test-xl font-semibold hover:bg-slate-300">Go To Tests</button>
+      <button className="bg-white rounded-lg py-2 md:px-6 px-2 test-xl font-semibold hover:bg-slate-300" onClick={() => {
+            navigation("/search-test");
+          }}>Go To Tests</button>
       </div>
     </div>
   )
