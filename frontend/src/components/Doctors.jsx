@@ -8,6 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
+import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,19 +16,20 @@ gsap.registerPlugin(ScrollTrigger);
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 345,
   cursor: "pointer",
-  height: 500, 
-  borderRadius: theme.shape.borderRadius, 
-  boxShadow: theme.shadows[3], 
+  height: 450,
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
   transition: "transform 0.2s",
 }));
 
-export default function ChannelingCard({
-  CentreName,
-  description,
-  image,
-  rating,
+export default function DoctorCard({
+  Name,
+  Age,
+  Photo,
   id,
-  district,
+  Type,
+  Fee,
+  rating
 }) {
   const navigate = useNavigate();
   const cardRef = useRef(null);
@@ -72,7 +74,7 @@ export default function ChannelingCard({
   }, []);
 
   const handleCardClick = () => {
-    navigate(`/channeling/center/${id}`);
+    navigate(`/channeling/doctor/${id}`);
   };
 
   return (
@@ -84,8 +86,8 @@ export default function ChannelingCard({
           objectFit: "contain",
         }}
         component="img"
-        alt={CentreName}
-        image={image}
+        alt={Name}
+        image={Photo}
       />
       <CardContent>
         <Typography
@@ -93,7 +95,7 @@ export default function ChannelingCard({
           variant="h5"
           component="div"
         >
-          {CentreName}
+          {Name}
         </Typography>
         <Typography
           className="text-center font-semibold"
@@ -101,19 +103,37 @@ export default function ChannelingCard({
           variant="h6"
           component="div"
         >
-          {district}
+          Age: {Age}
         </Typography>
         <Typography
-          className="text-justify"
+          className="text-center font-semibold"
           variant="body2"
           color="text.secondary"
         >
-          {description}
+          {Type}
         </Typography>
       </CardContent>
       <CardActions>
-        <Rating className="mx-auto" name="read-only" value={rating} readOnly />
+        <Rating
+          className="mx-auto"
+          size="large"
+          precision={0.5}
+          value={rating}
+          readOnly
+        />
       </CardActions>
+      <Typography
+          className="text-center font-semibold"
+          variant="body2"
+          color="text.secondary"
+        >
+          {Fee}
+        </Typography>
+        <div className="flex justify-center pt-3">
+      <Button variant="contained" className="text-center">
+        Channel Now
+      </Button>
+    </div>
     </StyledCard>
   );
 }
