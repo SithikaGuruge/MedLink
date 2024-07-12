@@ -5,6 +5,13 @@ import Login from "./pages/Login/Login";
 import PaymentGateway from "./components/PaymentGateway";
 import Channeling from "./components/Channeling";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DisplayMedicinePage from "./pages/medicine";
+import ProductPage from "./pages/product";
+import ScanResultsPage from "./pages/ScansResultPage";
+import MedicinePage from "./pages/SearchMedicinePage";
+import ScanPage from "./pages/SearchScansPage";
+import TestPage from "./pages/SearchTestsPage";
+
 
 const App = () => {
   return (
@@ -16,6 +23,12 @@ const App = () => {
         <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/payment" element={<PaymentGateway />} />
         <Route path="/channeling" element={<Channeling />} />
+        <Route path="/display-medicine" element={<DisplayMedicinePage />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="/scan-results" element={<ScanResultsPage />} />
+        <Route path="/medicine" element={<MedicinePage />} />
+        <Route path="/scan" element={<ScanPage />} />
+        <Route path="/test" element={<TestPage />} />
       </Routes>
     </BrowserRouter>
   );

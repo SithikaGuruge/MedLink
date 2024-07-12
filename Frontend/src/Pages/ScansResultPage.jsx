@@ -1,40 +1,29 @@
- 
+import SearchBar from "../components/SearchBar.jsx";
+import Item from "../components/items.jsx";
+import Navbar from "../components/Navbar.jsx";
+import Footer from "../components/Footer.jsx";
 
- import SearchBar from '../components/SearchBar.jsx';
-import Input from '../components/input.jsx';
- import Item from '../components/items.jsx';
+function ScanResultsPage() {
+  return (
+    <div>
+      <Navbar />
+      <div className="pt-5">
+        <SearchBar />
+      </div>
 
- function ScanResultsPage(){
+      <div className="flex justify-start text-xl font-semibold mb-7 mt-5">
+        <p className="">Search Results</p>
+      </div>
 
-    return(
-        <>
-        <div>
-            <div>
-                <SearchBar/>
-            </div>
+      <div>
+        <Item />
 
-            <div className="flex justify-start text-xl font-semibold mb-7 mt-5">
-                <p className="">Search Results</p>
+        <Item />
+      </div>
 
-            </div>
-                
-            <div>
-                <Item/>
-                
-                <Item/>
-            </div>
+      <Footer />
+    </div>
+  );
+}
 
-        </div>
-        </>
-    
-
-
-    );
-       
-
-   
-    
-
- }
-
- export default ScanResultsPage;
+export default ScanResultsPage;
