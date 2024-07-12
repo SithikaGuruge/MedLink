@@ -1,6 +1,8 @@
 import React from "react";
 import image from "../../assets/Scans.jpeg";
+
 import { useNavigate } from "react-router-dom";
+
 
 export default function Scans() {
   const navigation = useNavigate();
@@ -46,10 +48,12 @@ export default function Scans() {
       </div>
       <div className="flex justify-center">
         <button
+
           onClick={() => {
             navigation("/scan");
           }}
           className="bg-blue-400 rounded-lg py-2 md:px-6 px-2 test-xl font-semibold hover:bg-blue-600"
+
         >
           Go To Scans
         </button>

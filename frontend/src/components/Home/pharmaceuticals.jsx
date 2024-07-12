@@ -38,7 +38,7 @@ export default function Pharmaceuticals() {
         </div>
       </div>
       <div className="flex justify-center">
-        <button className="bg-blue-400 rounded-lg py-2 md:px-6 px-2 test-xl font-semibold hover:bg-blue-600">
+        <button className="bg-blue-400 rounded-lg py-2 md:px-6 px-2 test-xl font-semibold hover:bg-blue-600" onClick={() => window.location.href = '/display-medicine'}>
           Go To Pharmaceuticals
         </button>
       </div>
