@@ -63,7 +63,8 @@ export default function ChannelingCard({ CentreName, description, image, id }) {
   }, []);
 
   const handleCardClick = () => {
-    navigate(`/channeling/centre/${id}`);
+    // navigate(`/scans/type/${id}`);
+    navigate(`/scans/type/${id}`);
   };
 
   return (

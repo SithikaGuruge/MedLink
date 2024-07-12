@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DisplayMedicinePage from "./pages/medicine";
 import ProductPage from "./pages/product";
 import ScanResultsPage from "./pages/ScansResultPage";
+import Scan from "./components/Scan";
 import MedicinePage from "./pages/SearchMedicinePage";
 import ScanPage from "./pages/SearchScansPage";
 import TestPage from "./pages/SearchTestsPage";
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/display-medicine" element={<DisplayMedicinePage />} />
         <Route path="/product" element={<ProductPage />} />
         <Route path="/scan" element={<ScansPage />} />
+        <Route path="/scans/type/:id" element={<Scan />} />
         <Route path="/scan-results" element={<ScanResultsPage />} />
         <Route path="/medicine" element={<MedicinePage />} />
         <Route path="/search-scan" element={<ScanPage />} />
