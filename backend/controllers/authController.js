@@ -9,47 +9,84 @@ dotenv.config();
 
 const signup = async (req, res) => {
   try {
-    const { name, email, role, password, passwordConfirm,picture } = req.body;
+    const { name, email, role, password, passwordConfirm,picture,Type,userId } = req.body;
 
-    const error = validateUser({
-      name,
-      email,
-      role,
-      password,
-      passwordConfirm,
-    });
-    if (error)
-      return res.status(400).json({ message: error.details[0].message });
+    if (Type === 'email_joined'){
+      const existingUser = await db.collection("UserAccountDetails").findOne({
+        email,
+      });
 
-    const existingUser = await db.collection("UserAccountDetails").findOne({
-      email,
-    });
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
+      }
 
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      const hashedPassword = await bcrypt.hash(userId, 12);
+
+      const newUserAccDetails = new UserAccDetails({
+        email,
+        role,
+        password: hashedPassword,
+      });
+
+      const { insertedId } = await db
+        .collection("UserAccountDetails")
+        .insertOne(newUserAccDetails);
+
+      const newUser = new User({
+        name,
+        email,
+        user: insertedId,
+        address: "",
+        contactNumber: "",
+        age: "",
+        picture: picture,
+      
+      });
+      await db.collection("Users").insertOne(newUser);
+      res.status(201).json({ message: "User created successfully" });
     }
+    else {
+      const error = validateUser({
+        name,
+        email,
+        role,
+        password,
+        passwordConfirm,
+      });
+      if (error)
+        return res.status(400).json({ message: error.details[0].message });
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+      const existingUser = await db.collection("UserAccountDetails").findOne({
+        email,
+      });
 
-    const newUserAccDetails = new UserAccDetails({
-      email,
-      role,
-      password: hashedPassword,
-    });
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
+      }
 
-    const { insertedId } = await db
-      .collection("UserAccountDetails")
-      .insertOne(newUserAccDetails);
+      const hashedPassword = await bcrypt.hash(password, 12);
 
-    const newUser = new User({
-      name,
-      email,
-      user: insertedId,
-      address: "",
-      contactNumber: "",
-      age: "",
-      picture: picture,
-    });
+      const newUserAccDetails = new UserAccDetails({
+        email,
+        role,
+        password: hashedPassword,
+      });
+
+      const { insertedId } = await db
+        .collection("UserAccountDetails")
+        .insertOne(newUserAccDetails);
+
+      const newUser = new User({
+        name,
+        email,
+        user: insertedId,
+        address: "",
+        contactNumber: "",
+        age: "",
+        picture: picture,
+      
+      });
+    }
 
     await db.collection("Users").insertOne(newUser);
     res.status(201).json({ message: "User created successfully" });
@@ -60,19 +97,37 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, Type, userId} = req.body;
 
-    const user = await db.collection("UserAccountDetails").findOne({ email });
+    if (Type === 'email_joined'){
+      console.log('email login')
+      const user = await db.collection("UserAccountDetails").findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      const isPasswordCorrect = await bcrypt.compare(userId, user.password);
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      
+      }
+      if (!user) {
+        return res.status(400).json({ message: "Sign-up with your Google account first!" });
+      }
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    else{
 
+      const user = await db.collection("UserAccountDetails").findOne({ email });
+
+      if (!user) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+
+      const isPasswordCorrect = await bcrypt.compare(password, user.password);
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      
+      }
+    }
+    
     const token = jwt.sign(
       { email, userId: user._id },
       process.env.JWT_SECRET,
@@ -80,6 +135,7 @@ const login = async (req, res) => {
         expiresIn: process.env.JWT_EXPIRE || "1h",
       }
     );
+
     res.setHeader("Authorization", `Bearer ${token}`);
 
     console.log("Token sent in response headers:", token);
